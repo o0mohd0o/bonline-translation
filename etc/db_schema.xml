@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="bonlineco_translation" resource="default" engine="innodb" comment="Bonline Translation Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="text" name="string" nullable="false" comment="Original String"/>
+        <column xsi:type="text" name="translation" nullable="true" comment="Translation"/>
+        <column xsi:type="varchar" name="locale" nullable="false" length="10" comment="Locale Code"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" default="0" comment="Store ID"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="BONLINE_TRANSLATION_STRING_LOCALE_STORE_ID">
+            <column name="string"/>
+            <column name="locale"/>
+            <column name="store_id"/>
+        </constraint>
+        <index referenceId="BONLINE_TRANSLATION_STRING" indexType="fulltext">
+            <column name="string"/>
+        </index>
+        <index referenceId="BONLINE_TRANSLATION_LOCALE">
+            <column name="locale"/>
+        </index>
+        <index referenceId="BONLINE_TRANSLATION_STORE_ID">
+            <column name="store_id"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Bonlineco_Translation::translation" title="Bonline" translate="title" module="Bonlineco_Translation" sortOrder="60" resource="Bonlineco_Translation::translation"/>
+        <add id="Bonlineco_Translation::manage" title="Manage Translations" translate="title" module="Bonlineco_Translation" sortOrder="10" parent="Bonlineco_Translation::translation" action="bonlineco_translation/manage/index" resource="Bonlineco_Translation::manage"/>
+        <add id="Bonlineco_Translation::tools" title="Translation Tools" translate="title" module="Bonlineco_Translation" sortOrder="20" parent="Bonlineco_Translation::translation" action="bonlineco_translation/tools/index" resource="Bonlineco_Translation::tools"/>
+    </menu>
+</config>

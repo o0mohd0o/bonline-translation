@@ -1,0 +1,73 @@
+<?php
+/**
+ * @var \Bonlineco\Translation\Block\Adminhtml\Tools\Index $block
+ */
+?>
+<div class="translation-tools">
+    <div class="admin__fieldset">
+        <div class="admin__field">
+            <div class="admin__field-label">
+                <label><?= $block->escapeHtml(__('Clean Translation Cache')) ?></label>
+            </div>
+            <div class="admin__field-control">
+                <button id="clean-cache-btn" class="action-primary" type="button">
+                    <span><?= $block->escapeHtml(__('Clean Cache and Static Files')) ?></span>
+                </button>
+                <p class="note"><?= $block->escapeHtml(__('This will run: rm -frv var generated pub/static/frontend')) ?></p>
+                <div id="clean-cache-result" class="message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="admin__field">
+            <div class="admin__field-label">
+                <label><?= $block->escapeHtml(__('Deploy Custom Translations')) ?></label>
+            </div>
+            <div class="admin__field-control">
+                <button id="deploy-translations-btn" class="action-primary" type="button">
+                    <span><?= $block->escapeHtml(__('Deploy Custom Translations')) ?></span>
+                </button>
+                <p class="note"><?= $block->escapeHtml(__('This will deploy all custom translations from the database to Magento translation files')) ?></p>
+                <div id="deploy-translations-result" class="message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="admin__field">
+            <div class="admin__field-label">
+                <label><?= $block->escapeHtml(__('Deploy Static Content')) ?></label>
+            </div>
+            <div class="admin__field-control">
+                <div class="admin__field-option" id="locale-options">
+                    <?php foreach ($block->getAvailableLocales() as $code => $label): ?>
+                        <div class="admin__field-option">
+                            <input class="admin__control-checkbox" type="checkbox" id="locale-<?= $block->escapeHtmlAttr($code) ?>" 
+                                   name="locales[]" value="<?= $block->escapeHtmlAttr($code) ?>">
+                            <label class="admin__field-label" for="locale-<?= $block->escapeHtmlAttr($code) ?>">
+                                <?= $block->escapeHtml($label) ?>
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="admin__field-control">
+                    <button id="deploy-static-btn" class="action-primary" type="button">
+                        <span><?= $block->escapeHtml(__('Deploy Static Content')) ?></span>
+                    </button>
+                    <p class="note"><?= $block->escapeHtml(__('This will run: bin/magento setup:static-content:deploy [selected-languages] -f')) ?></p>
+                </div>
+                <div id="deploy-static-result" class="message" style="display: none;"></div>
+                <div id="deploy-static-output" style="display: none; margin-top: 10px; max-height: 300px; overflow: auto; background: #f8f8f8; padding: 10px; font-family: monospace;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Bonlineco_Translation/js/translation-tools": {
+            "cleanCacheUrl": "<?= $block->escapeJs($block->getCleanCacheUrl()) ?>",
+            "deployStaticUrl": "<?= $block->escapeJs($block->getDeployStaticUrl()) ?>",
+            "deployTranslationsUrl": "<?= $block->escapeJs($block->getDeployTranslationsUrl()) ?>"
+        }
+    }
+}
+</script>

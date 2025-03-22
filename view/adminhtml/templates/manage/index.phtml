@@ -1,0 +1,257 @@
+<?php
+/**
+ * @var \Bonlineco\Translation\Block\Adminhtml\Manage\Index $block
+ */
+$locales = $block->getAvailableLocales();
+$stores = $block->getStores();
+?>
+<div class="translation-manage">
+    <div class="admin__data-grid-header">
+        <div class="admin__data-grid-header-row">
+            <div class="admin__data-grid-actions-wrap">
+                <div class="page-main-actions">
+                    <div class="page-actions">
+                        <div class="page-actions-buttons">
+                            <button id="add-translation-btn" class="action-primary">
+                                <span><?= $block->escapeHtml(__('Add New Translation')) ?></span>
+                            </button>
+                            <button id="export-btn" class="action-secondary">
+                                <span><?= $block->escapeHtml(__('Export Translations')) ?></span>
+                            </button>
+                            <form id="translation-import-form" method="post" action="<?= $block->escapeUrl($block->getUrl('bonlineco_translation/manage/import')) ?>" enctype="multipart/form-data" style="display: inline-block;">
+                                <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>" />
+                                <span class="import-file-wrapper" style="position: relative;">
+                                    <input id="import-file" name="import_file" type="file" class="admin__control-file" accept=".csv" style="position: absolute; opacity: 0; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;" />
+                                    <button id="import-btn" class="action-secondary" type="button">
+                                        <span><?= $block->escapeHtml(__('Import Translations')) ?></span>
+                                    </button>
+                                </span>
+                                <button id="import-submit-btn" class="action-primary" type="submit" style="display: none;">
+                                    <span><?= $block->escapeHtml(__('Upload Selected File')) ?></span>
+                                </button>
+                                <span id="selected-file-name" style="margin-left: 10px; display: none;"></span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="admin__filter-actions">
+                <div class="admin__data-grid-filters-wrap">
+                    <div class="admin__data-grid-filters-current">
+                        <div class="search-field">
+                            <input id="translation-search" class="admin__control-text" type="text" placeholder="<?= $block->escapeHtml(__('Search translations...')) ?>">
+                        </div>
+                        <div class="admin__form-field">
+                            <select id="translation-locale" class="admin__control-select">
+                                <option value=""><?= $block->escapeHtml(__('All Locales')) ?></option>
+                                <?php foreach ($locales as $code => $label): ?>
+                                    <option value="<?= $block->escapeHtmlAttr($code) ?>"><?= $block->escapeHtml($label) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="admin__form-field">
+                            <select id="translation-store" class="admin__control-select">
+                                <option value="0"><?= $block->escapeHtml(__('All Stores')) ?></option>
+                                <?php foreach ($stores as $store): ?>
+                                    <option value="<?= $block->escapeHtmlAttr($store->getId()) ?>"><?= $block->escapeHtml($store->getName()) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="admin__form-field">
+                            <button id="search-button" class="action-default">
+                                <?= $block->escapeHtml(__('Search')) ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin__data-grid-wrap">
+        <!-- Mass Actions Dropdown -->
+        <div class="admin__data-grid-header-row">
+            <div class="admin__data-grid-actions-wrap">
+                <div class="admin__data-grid-massaction">
+                    <div class="admin__grid-massaction-form">
+                        <select id="translation-mass-action" class="admin__control-select">
+                            <option value=""><?= $block->escapeHtml(__('Actions')) ?></option>
+                            <option value="delete"><?= $block->escapeHtml(__('Delete')) ?></option>
+                        </select>
+                        <button id="translation-mass-action-apply" class="action-default" disabled>
+                            <span><?= $block->escapeHtml(__('Submit')) ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="data-grid" id="translation-grid">
+            <thead>
+                <tr>
+                    <th class="data-grid-th data-grid-multicheck-cell">
+                        <div class="data-grid-checkbox-cell-inner">
+                            <input type="checkbox" id="select-all-translations" class="admin__control-checkbox">
+                            <label for="select-all-translations"></label>
+                        </div>
+                    </th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('ID')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Original String')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Translation')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Locale')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Store')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Actions')) ?></th>
+                </tr>
+            </thead>
+            <tbody id="translation-grid-body">
+                <tr class="data-row">
+                    <td class="data-grid-loading-msg" colspan="7">
+                        <div class="data-grid-loading-msg-text"><?= $block->escapeHtml(__('Loading translations...')) ?></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="admin__data-grid-pager-wrap">
+        <div class="admin__data-grid-pager" id="translation-pager">
+            <span class="admin__data-grid-pager-info">
+                <span id="translation-total-count">0</span> <?= $block->escapeHtml(__('Records found')) ?>
+            </span>
+            <nav class="admin__data-grid-pager-nav">
+                <button class="action-previous" id="pager-prev" disabled="disabled">
+                    <span><?= $block->escapeHtml(__('Previous page')) ?></span>
+                </button>
+                <input class="admin__control-text" type="number" id="pager-current" value="1" min="1">
+                <span id="pager-of"><?= $block->escapeHtml(__('of')) ?> <span id="pager-pages">1</span></span>
+                <button class="action-next" id="pager-next" disabled="disabled">
+                    <span><?= $block->escapeHtml(__('Next page')) ?></span>
+                </button>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Translation Edit Modal -->
+<div id="translation-edit-modal" style="display:none;">
+    <form id="translation-form">
+        <fieldset class="admin__fieldset">
+            <input type="hidden" id="translation-id" name="id" value="0">
+            
+            <div class="admin__field">
+                <label class="admin__field-label" for="translation-string">
+                    <span><?= $block->escapeHtml(__('Original String')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <textarea id="translation-string" name="string" class="admin__control-textarea" rows="3" required></textarea>
+                </div>
+            </div>
+            
+            <div class="admin__field">
+                <label class="admin__field-label" for="translation-translation">
+                    <span><?= $block->escapeHtml(__('Translation')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <textarea id="translation-translation" name="translation" class="admin__control-textarea" rows="3"></textarea>
+                </div>
+            </div>
+            
+            <div class="admin__field">
+                <label class="admin__field-label" for="translation-form-locale">
+                    <span><?= $block->escapeHtml(__('Locale')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="translation-form-locale" name="locale" class="admin__control-select" required>
+                        <option value=""><?= $block->escapeHtml(__('-- Select Locale --')) ?></option>
+                        <?php foreach ($locales as $code => $label): ?>
+                            <option value="<?= $block->escapeHtmlAttr($code) ?>"><?= $block->escapeHtml($label) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="admin__field">
+                <label class="admin__field-label" for="translation-form-store">
+                    <span><?= $block->escapeHtml(__('Store')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="translation-form-store" name="store_id" class="admin__control-select">
+                        <option value="0"><?= $block->escapeHtml(__('All Stores')) ?></option>
+                        <?php foreach ($stores as $store): ?>
+                            <option value="<?= $block->escapeHtmlAttr($store->getId()) ?>"><?= $block->escapeHtml($store->getName()) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<!-- Import Modal -->
+<div id="translation-import-modal" style="display:none;">
+    <form id="translation-import-form" method="post" enctype="multipart/form-data" action="<?= $block->escapeUrl($block->getUrl('bonlineco_translation/manage/import')) ?>">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field">
+                <label class="admin__field-label" for="import_file">
+                    <span><?= $block->escapeHtml(__('CSV File')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input id="import_file" name="import_file" type="file" class="admin__control-file" accept=".csv" required />
+                    <div class="admin__field-note">
+                        <span><?= $block->escapeHtml(__('Please select a CSV file with the following columns: string, translation, locale, store_id')) ?></span>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<!-- Export Modal -->
+<div id="translation-export-modal" style="display:none;">
+    <form id="translation-export-form" method="get" action="<?= $block->escapeUrl($block->getUrl('bonlineco_translation/manage/export')) ?>">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field">
+                <label class="admin__field-label" for="export-locale">
+                    <span><?= $block->escapeHtml(__('Locale')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="export-locale" name="locale" class="admin__control-select">
+                        <option value=""><?= $block->escapeHtml(__('All Locales')) ?></option>
+                        <?php foreach ($locales as $code => $label): ?>
+                            <option value="<?= $block->escapeHtmlAttr($code) ?>"><?= $block->escapeHtml($label) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label" for="export-store">
+                    <span><?= $block->escapeHtml(__('Store View')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="export-store" name="store_id" class="admin__control-select">
+                        <option value="0"><?= $block->escapeHtml(__('All Store Views')) ?></option>
+                        <?php foreach ($stores as $store): ?>
+                            <option value="<?= $block->escapeHtmlAttr($store->getId()) ?>"><?= $block->escapeHtml($store->getName()) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Bonlineco_Translation/js/translation-manage": {
+            "loadUrl": "<?= $block->escapeJs($block->getLoadTranslationsUrl()) ?>",
+            "saveUrl": "<?= $block->escapeJs($block->getSaveTranslationUrl()) ?>",
+            "deleteUrl": "<?= $block->escapeJs($block->getDeleteTranslationUrl()) ?>",
+            "massDeleteUrl": "<?= $block->escapeJs($block->getMassDeleteUrl()) ?>",
+            "importUrl": "<?= $block->escapeJs($block->getUrl('bonlineco_translation/manage/import')) ?>"
+        }
+    }
+}
+</script>

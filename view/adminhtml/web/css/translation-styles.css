@@ -1,0 +1,53 @@
+/**
+ * Bonline Translation Module
+ *
+ * @category  Bonline
+ * @package   Bonlineco_Translation
+ */
+
+/* Grid styling */
+.translation-grid-container .admin__data-grid-header-row {
+    padding: 1rem 0;
+}
+
+.translation-grid-container .admin__data-grid-massaction {
+    padding-left: 0;
+}
+
+/* Results styling */
+.details-list {
+    margin-top: 10px;
+    margin-left: 15px;
+    font-size: 13px;
+}
+
+.details-list li {
+    margin-bottom: 5px;
+}
+
+/* Translation string cell styling */
+.data-grid-data-cell .data-grid-cell-content {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Make sure checkboxes are aligned properly */
+.data-grid-multicheck-cell {
+    text-align: center;
+    width: 40px;
+}
+
+.data-grid-multicheck-cell .data-grid-checkbox-cell-inner {
+    padding-top: 9px;
+}
+
+/* Pager and actions area */
+.admin__data-grid-pager-wrap {
+    margin-top: 1rem;
+}
+
+.translation-manage .message {
+    margin-bottom: 2rem;
+}
