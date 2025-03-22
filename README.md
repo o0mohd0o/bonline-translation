@@ -1,7 +1,7 @@
-# Bonline Translation Module for Magento 2
+# Bonlineco Translation Module for Magento 2
 
 ## Overview
-The Bonline Translation module enhances Magento 2's translation capabilities by providing a user-friendly interface in the admin panel to manage, import, export, and deploy translations. This simplifies the process of customizing translations for your store without modifying CSV files directly.
+The Bonlineco Translation module enhances Magento 2's translation capabilities by providing a user-friendly interface in the admin panel to manage, import, export, and deploy translations. This simplifies the process of customizing translations for your store without modifying CSV files directly.
 
 ## Features
 
