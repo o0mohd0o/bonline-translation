@@ -20,6 +20,14 @@ The Bonlineco Translation module enhances Magento 2's translation capabilities b
 - **Clean Cache**: Clear Magento's translation cache directly from the admin panel.
 - **Deploy Static Content**: Run the static content deployment process to apply translation changes.
 
+## Screenshots
+
+### Translation Management
+![Translation Management Interface](https://bonlineco.com/github/bonlineco-translation/bonlineco-translation-manage-translation.png)
+
+### Translation Tools
+![Translation Tools Interface](https://bonlineco.com/github/bonlineco-translation/bonlineco-translation-translation-tools.png)
+
 ## Installation
 
 ### Manual Installation
