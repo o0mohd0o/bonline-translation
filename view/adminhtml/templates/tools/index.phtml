@@ -28,6 +28,7 @@
                 </button>
                 <p class="note"><?= $block->escapeHtml(__('This will deploy all custom translations from the database to Magento translation files')) ?></p>
                 <div id="deploy-translations-result" class="message" style="display: none;"></div>
+                <pre id="deploy-translations-output" class="command-output" style="display: none; max-height: 300px; overflow: auto; margin-top: 10px; background: #f0f0f0; padding: 10px; font-size: 12px; border: 1px solid #ccc;"></pre>
             </div>
         </div>
 
@@ -66,7 +67,8 @@
         "Bonlineco_Translation/js/translation-tools": {
             "cleanCacheUrl": "<?= $block->escapeJs($block->getCleanCacheUrl()) ?>",
             "deployStaticUrl": "<?= $block->escapeJs($block->getDeployStaticUrl()) ?>",
-            "deployTranslationsUrl": "<?= $block->escapeJs($block->getDeployTranslationsUrl()) ?>"
+            "deployTranslationsUrl": "<?= $block->escapeJs($block->getDeployTranslationsUrl()) ?>",
+            "loaderUrl": "<?= $block->escapeJs($block->getViewFileUrl('images/loader-1.gif')) ?>"
         }
     }
 }
